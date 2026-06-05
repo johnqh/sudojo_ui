@@ -17,3 +17,20 @@ export { default as GameTimer, type GameTimerProps } from './components/GameTime
 
 // Canvas
 export { default as SudokuCanvas } from './components/SudokuCanvas';
+
+// Hint
+export { default as HintPanel, type HintPanelProps } from './components/HintPanel';
+
+// Controls
+export {
+  default as SudokuControls,
+  type SudokuControlsProps,
+  type SudokuControlsLabels,
+} from './components/SudokuControls';
+
+// Entry
+export {
+  default as EntryControls,
+  type EntryControlsProps,
+  type EntryControlsLabels,
+} from './components/EntryControls';
