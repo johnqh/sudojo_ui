@@ -1,2 +1,7 @@
-// @sudobility/sudojo_ui — Shared Sudoku game UI components
-export {};
+// Layout
+export { default as SudokuLayout } from './components/SudokuLayout';
+export {
+  SudokuLayoutContext,
+  useSudokuLayout,
+  type SudokuLayoutContextValue,
+} from './components/SudokuLayoutContext';
