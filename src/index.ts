@@ -34,3 +34,6 @@ export {
   type EntryControlsProps,
   type EntryControlsLabels,
 } from './components/EntryControls';
+
+// Game orchestrator
+export { default as SudokuGame, type SudokuGameProps } from './components/SudokuGame';
