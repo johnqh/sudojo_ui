@@ -14,3 +14,6 @@ export {
 
 // Timer
 export { default as GameTimer, type GameTimerProps } from './components/GameTimer';
+
+// Canvas
+export { default as SudokuCanvas } from './components/SudokuCanvas';
