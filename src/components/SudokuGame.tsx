@@ -232,19 +232,19 @@ function SudokuGameInner({
   const portraitWidth = 'min(100cqw, calc(62cqh - 36px))';
 
   return (
-    <div className="h-full w-full overflow-hidden" style={{ containerType: 'size' }}>
+    <>
       <CompletionCelebration show={showCelebration} onComplete={onCelebrationComplete} />
       {isLandscape ? (
-        <div className="h-full flex flex-col gap-2">
+        <div className="h-full flex flex-col items-start gap-2">
           <div className="flex-shrink-0" style={{ width: 'min(calc(100cqh - 3rem), 60cqw)' }}>
             {header}
             {completionMessage}
           </div>
           <div className="flex-1 min-h-0 flex gap-4">
-            <div className="h-full aspect-square flex-shrink-0">{boardElement}</div>
+            <div className="flex-shrink-0" style={{ width: 'min(calc(100cqh - 3.5rem), 55cqw)', aspectRatio: '1' }}>{boardElement}</div>
             <div
-              className="h-full overflow-hidden flex-1 min-w-0"
-              style={{ maxWidth: 'calc(60cqh - 1.8rem - 3.2px)' }}
+              className="h-full overflow-hidden"
+              style={{ width: 'min(calc(60cqh - 3.5rem), 33cqw)' }}
             >
               {hasHint ? (
                 <>
@@ -278,7 +278,7 @@ function SudokuGameInner({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

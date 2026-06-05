@@ -34,7 +34,7 @@ export default function SudokuLayout({ children }: SudokuLayoutProps) {
 
   return (
     <SudokuLayoutContext.Provider value={layoutCtx}>
-      <div ref={containerRef} className="w-full flex-1 min-h-0 overflow-hidden">
+      <div ref={containerRef} className="w-full flex-1 min-h-0 overflow-hidden" style={{ containerType: 'size' }}>
         {children}
       </div>
     </SudokuLayoutContext.Provider>
