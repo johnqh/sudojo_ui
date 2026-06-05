@@ -229,10 +229,12 @@ function SudokuGameInner({
     labels: controlsLabels!,
   };
 
-  if (isLandscape) {
-    return (
-      <div className="h-full w-full overflow-hidden" style={{ containerType: 'size' }}>
-        <CompletionCelebration show={showCelebration} onComplete={onCelebrationComplete} />
+  const portraitWidth = 'min(100cqw, calc(62cqh - 36px))';
+
+  return (
+    <div className="h-full w-full overflow-hidden" style={{ containerType: 'size' }}>
+      <CompletionCelebration show={showCelebration} onComplete={onCelebrationComplete} />
+      {isLandscape ? (
         <div className="h-full flex flex-col gap-2">
           <div className="flex-shrink-0" style={{ width: 'min(calc(100cqh - 3rem), 60cqw)' }}>
             {header}
@@ -255,34 +257,27 @@ function SudokuGameInner({
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  const portraitWidth = 'min(100cqw, calc(62cqh - 36px))';
-
-  return (
-    <div className="h-full w-full overflow-hidden" style={{ containerType: 'size' }}>
-      <div className="h-full flex flex-col items-center gap-2">
-        <CompletionCelebration show={showCelebration} onComplete={onCelebrationComplete} />
-        <div className="flex-shrink-0" style={{ width: portraitWidth }}>
-          {header}
-          {completionMessage}
+      ) : (
+        <div className="h-full flex flex-col items-center gap-2">
+          <div className="flex-shrink-0" style={{ width: portraitWidth }}>
+            {header}
+            {completionMessage}
+          </div>
+          <div className="flex-shrink-0 aspect-square" style={{ width: portraitWidth }}>
+            {boardElement}
+          </div>
+          <div className="flex-1 min-h-0 overflow-hidden" style={{ width: portraitWidth }}>
+            {hasHint ? (
+              <>
+                {hintPanel}
+                {hintAccessPanel}
+              </>
+            ) : showControls && controlsLabels ? (
+              <SudokuControls {...controlsProps} />
+            ) : null}
+          </div>
         </div>
-        <div className="flex-shrink-0 aspect-square" style={{ width: portraitWidth }}>
-          {boardElement}
-        </div>
-        <div className="flex-1 min-h-0 overflow-hidden" style={{ width: portraitWidth }}>
-          {hasHint ? (
-            <>
-              {hintPanel}
-              {hintAccessPanel}
-            </>
-          ) : showControls && controlsLabels ? (
-            <SudokuControls {...controlsProps} />
-          ) : null}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
