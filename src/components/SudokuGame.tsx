@@ -1,7 +1,6 @@
 import { memo, type ReactNode } from 'react';
 import type { SudokuCell, DigitDisplay } from '@sudobility/sudojo_lib';
 import type { SolverHintStep } from '@sudobility/sudojo_types';
-import { Card, CardContent, Text } from '@sudobility/components';
 import SudokuCanvas from './SudokuCanvas';
 import SudokuControls from './SudokuControls';
 import type { SudokuControlsLabels } from './SudokuControls';
@@ -34,7 +33,6 @@ export interface SudokuGameProps {
   hintTitle?: string;
   hintText?: string;
   hintActionSummary?: string;
-  hintStepIndex?: number;
   hintTotalSteps?: number;
   hintStepLabel?: string;
   hintHasNext?: boolean;
@@ -108,7 +106,6 @@ function SudokuGameInner({
   hintTitle,
   hintText,
   hintActionSummary,
-  hintStepIndex = 0,
   hintTotalSteps = 0,
   hintStepLabel,
   hintHasNext = false,
@@ -176,7 +173,6 @@ function SudokuGameInner({
       title={hintTitle!}
       text={hintText ?? ''}
       actionSummary={hintActionSummary ?? ''}
-      stepIndex={hintStepIndex}
       totalSteps={hintTotalSteps}
       hasNextStep={hintHasNext}
       hasPreviousStep={hintHasPrevious}
@@ -199,8 +195,7 @@ function SudokuGameInner({
         title={hintTitle!}
         text={hintText ?? ''}
         actionSummary={hintActionSummary ?? ''}
-        stepIndex={hintStepIndex}
-        totalSteps={hintTotalSteps}
+          totalSteps={hintTotalSteps}
         hasNextStep={hintHasNext}
         hasPreviousStep={hintHasPrevious}
         canApply={hintCanApply}

@@ -7,7 +7,6 @@ export interface HintPanelProps {
   text: string;
   /** Pre-computed action summary (e.g., "Set R3C5 = 7") */
   actionSummary: string;
-  stepIndex: number;
   totalSteps: number;
   hasNextStep: boolean;
   hasPreviousStep: boolean;
@@ -33,7 +32,6 @@ export default function HintPanel({
   title,
   text,
   actionSummary,
-  stepIndex,
   totalSteps,
   hasNextStep,
   hasPreviousStep,
