@@ -77,14 +77,17 @@ export interface SudokuGameProps {
   // Controls visibility — extension hides number pad during play
   showControls?: boolean;
 
-  // Localized labels
+  // Localized labels — required when showControls is true
   controlsLabels?: SudokuControlsLabels;
   hintLabels?: {
-    previous?: string;
-    next?: string;
-    apply?: string;
-    dismissAriaLabel?: string;
+    previous: string;
+    next: string;
+    apply: string;
+    dismissAriaLabel: string;
   };
+
+  // Aria label for the board canvas
+  boardAriaLabel?: string;
 }
 
 function SudokuGameInner({
@@ -133,6 +136,7 @@ function SudokuGameInner({
   showControls = true,
   controlsLabels,
   hintLabels,
+  boardAriaLabel,
 }: SudokuGameProps) {
   const { isLandscape } = useSudokuLayout();
 
@@ -163,10 +167,11 @@ function SudokuGameInner({
       digitDisplay={digitDisplay}
       onCanvasRef={onCanvasRef}
       className="w-full aspect-square"
+      boardAriaLabel={boardAriaLabel}
     />
   );
 
-  const hintPanel = hasHint && onHintNext && onHintPrevious && onHintApply && onHintDismiss && (
+  const hintPanel = hasHint && onHintNext && onHintPrevious && onHintApply && onHintDismiss && hintLabels && (
     <HintPanel
       title={hintTitle!}
       text={hintText ?? ''}
@@ -181,15 +186,15 @@ function SudokuGameInner({
       onApply={onHintApply}
       onDismiss={onHintDismiss}
       stepLabel={hintStepLabel}
-      previousLabel={hintLabels?.previous}
-      nextLabel={hintLabels?.next}
-      applyLabel={hintLabels?.apply}
-      dismissAriaLabel={hintLabels?.dismissAriaLabel}
+      previousLabel={hintLabels.previous}
+      nextLabel={hintLabels.next}
+      applyLabel={hintLabels.apply}
+      dismissAriaLabel={hintLabels.dismissAriaLabel}
     />
   );
 
   const hintPanelLandscape =
-    hasHint && onHintNext && onHintPrevious && onHintApply && onHintDismiss && (
+    hasHint && onHintNext && onHintPrevious && onHintApply && onHintDismiss && hintLabels && (
       <HintPanel
         title={hintTitle!}
         text={hintText ?? ''}
@@ -204,10 +209,10 @@ function SudokuGameInner({
         onApply={onHintApply}
         onDismiss={onHintDismiss}
         stepLabel={hintStepLabel}
-        previousLabel={hintLabels?.previous}
-        nextLabel={hintLabels?.next}
-        applyLabel={hintLabels?.apply}
-        dismissAriaLabel={hintLabels?.dismissAriaLabel}
+        previousLabel={hintLabels.previous}
+        nextLabel={hintLabels.next}
+        applyLabel={hintLabels.apply}
+        dismissAriaLabel={hintLabels.dismissAriaLabel}
         landscape
       />
     );
@@ -226,7 +231,7 @@ function SudokuGameInner({
     isHintLoading,
     disabled: isCompleted,
     digitDisplay,
-    labels: controlsLabels,
+    labels: controlsLabels!,
   };
 
   if (isLandscape) {
@@ -249,7 +254,7 @@ function SudokuGameInner({
                   {hintPanelLandscape}
                   {hintAccessPanel}
                 </>
-              ) : showControls ? (
+              ) : showControls && controlsLabels ? (
                 <SudokuControls {...controlsProps} landscape />
               ) : null}
             </div>
@@ -278,7 +283,7 @@ function SudokuGameInner({
               {hintPanel}
               {hintAccessPanel}
             </>
-          ) : showControls ? (
+          ) : showControls && controlsLabels ? (
             <SudokuControls {...controlsProps} />
           ) : null}
         </div>

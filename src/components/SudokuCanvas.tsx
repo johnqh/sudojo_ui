@@ -1,5 +1,4 @@
 import { memo, useRef, useEffect, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import type { SudokuCell } from '@sudobility/sudojo_lib';
 import type { SolverHintStep } from '@sudobility/sudojo_types';
 import type { DigitDisplay } from '@sudobility/sudojo_lib';
@@ -32,6 +31,8 @@ interface SudokuCanvasProps {
   onCanvasRef?: (canvas: HTMLCanvasElement | null) => void;
   /** Additional className for the container div */
   className?: string;
+  /** Aria label for the board canvas */
+  boardAriaLabel?: string;
 }
 
 /**
@@ -379,8 +380,8 @@ function SudokuCanvas({
   digitDisplay = 'numeric',
   onCanvasRef,
   className,
+  boardAriaLabel,
 }: SudokuCanvasProps) {
-  const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -667,7 +668,7 @@ function SudokuCanvas({
         ref={canvasRef}
         onClick={handleClick}
         className="touch-none cursor-pointer"
-        aria-label={t('game.sudokuBoardLabel')}
+        aria-label={boardAriaLabel}
       />
     </div>
   );

@@ -1,13 +1,13 @@
 import { Button } from '@sudobility/components';
 
 export interface EntryControlsLabels {
-  clueCount?: (count: number) => string;
-  minClues?: string;
-  pencilMode?: string;
-  eraseCell?: string;
-  clearBoard?: string;
-  validate?: string;
-  validating?: string;
+  clueCount: (count: number) => string;
+  minClues: string;
+  pencilMode: string;
+  eraseCell: string;
+  clearBoard: string;
+  validate: string;
+  validating: string;
 }
 
 export interface EntryControlsProps {
@@ -21,18 +21,8 @@ export interface EntryControlsProps {
   canEraseCell?: boolean;
   isPencilMode?: boolean;
   onTogglePencilMode?: () => void;
-  labels?: EntryControlsLabels;
+  labels: EntryControlsLabels;
 }
-
-const defaultLabels: Required<EntryControlsLabels> = {
-  clueCount: (count: number) => `${count} clues`,
-  minClues: '(minimum 17)',
-  pencilMode: 'Pencil',
-  eraseCell: 'Erase',
-  clearBoard: 'Clear',
-  validate: 'Validate',
-  validating: 'Validating...',
-};
 
 export default function EntryControls({
   onNumberInput,
@@ -45,9 +35,8 @@ export default function EntryControls({
   canEraseCell = false,
   isPencilMode = false,
   onTogglePencilMode,
-  labels: labelsProp,
+  labels,
 }: EntryControlsProps) {
-  const labels = { ...defaultLabels, ...labelsProp };
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (

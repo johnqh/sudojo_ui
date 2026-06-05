@@ -19,13 +19,13 @@ export interface HintPanelProps {
   /** Label for step indicator, e.g. "Step 2 of 5" */
   stepLabel?: string;
   /** Label for Previous button */
-  previousLabel?: string;
+  previousLabel: string;
   /** Label for Next button */
-  nextLabel?: string;
+  nextLabel: string;
   /** Label for Apply button */
-  applyLabel?: string;
+  applyLabel: string;
   /** Aria label for Dismiss button */
-  dismissAriaLabel?: string;
+  dismissAriaLabel: string;
   landscape?: boolean;
 }
 
@@ -43,10 +43,10 @@ export default function HintPanel({
   onApply,
   onDismiss,
   stepLabel,
-  previousLabel = 'Previous',
-  nextLabel = 'Next',
-  applyLabel = 'Apply',
-  dismissAriaLabel = 'Dismiss hint',
+  previousLabel,
+  nextLabel,
+  applyLabel,
+  dismissAriaLabel,
   landscape = false,
 }: HintPanelProps) {
   if (landscape) {

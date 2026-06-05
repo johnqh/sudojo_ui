@@ -10,13 +10,13 @@ import {
 } from '@heroicons/react/24/outline';
 
 export interface SudokuControlsLabels {
-  pencil?: string;
-  erase?: string;
-  undo?: string;
-  autoPencil?: string;
-  hint?: string;
-  hintLoading?: string;
-  newGame?: string;
+  pencil: string;
+  erase: string;
+  undo: string;
+  autoPencil: string;
+  hint: string;
+  hintLoading: string;
+  newGame: string;
 }
 
 export interface SudokuControlsProps {
@@ -34,18 +34,8 @@ export interface SudokuControlsProps {
   disabled?: boolean;
   digitDisplay?: DigitDisplay;
   landscape?: boolean;
-  labels?: SudokuControlsLabels;
+  labels: SudokuControlsLabels;
 }
-
-const defaultLabels: Required<SudokuControlsLabels> = {
-  pencil: 'Notes',
-  erase: 'Erase',
-  undo: 'Undo',
-  autoPencil: 'Auto',
-  hint: 'Hint',
-  hintLoading: 'Loading...',
-  newGame: 'New',
-};
 
 export default function SudokuControls({
   onNumberInput,
@@ -62,9 +52,8 @@ export default function SudokuControls({
   disabled = false,
   digitDisplay = 'numeric',
   landscape = false,
-  labels: labelsProp,
+  labels,
 }: SudokuControlsProps) {
-  const labels = { ...defaultLabels, ...labelsProp };
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const iconSize = landscape ? 'h-7 w-7' : 'h-5 w-5';
