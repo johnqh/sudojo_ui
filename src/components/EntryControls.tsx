@@ -14,7 +14,7 @@ export interface EntryControlsProps {
   onNumberInput: (value: number) => void;
   onErase?: () => void;
   onClearBoard?: () => void;
-  onValidate: () => void;
+  onValidate?: () => void;
   isValidating: boolean;
   disabled?: boolean;
   clueCount?: number;
@@ -96,14 +96,16 @@ export default function EntryControls({
           </Button>
         )}
 
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={onValidate}
-          disabled={disabled || isValidating || clueCount < 17}
-        >
-          {isValidating ? labels.validating : labels.validate}
-        </Button>
+        {onValidate && (
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={onValidate}
+            disabled={disabled || isValidating || clueCount < 17}
+          >
+            {isValidating ? labels.validating : labels.validate}
+          </Button>
+        )}
       </div>
     </div>
   );
