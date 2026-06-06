@@ -25,25 +25,26 @@
     "dev": "npm run build:watch"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
-    "@sudobility/sudojo_lib": ">=0.0.151",
-    "@sudobility/sudojo_types": ">=1.2.56",
-    "@sudobility/components": ">=5.0.71",
-    "@sudobility/design": ">=1.1.30",
-    "@heroicons/react": ">=2.0.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "typescript": "~5.9.3",
-    "@sudobility/sudojo_lib": "^0.0.151",
-    "@sudobility/sudojo_types": "^1.2.56",
+    "@heroicons/react": ">=2.0.0",
     "@sudobility/components": "^5.0.72",
     "@sudobility/design": "^1.1.30",
+    "@sudobility/sudojo_lib": "^0.0.152",
+    "@sudobility/sudojo_types": "^1.2.56",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
     "@heroicons/react": "^2.2.0",
+    "@sudobility/components": "^5.0.72",
+    "@sudobility/design": "^1.1.30",
+    "@sudobility/sudojo_lib": "^0.0.152",
+    "@sudobility/sudojo_types": "^1.2.56",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "class-variance-authority": "^0.7.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "typescript": "~5.9.3"
   },
   "author": "Sudobility team",
   "license": "BUSL-1.1",

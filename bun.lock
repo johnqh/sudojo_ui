@@ -1,0 +1,64 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 0,
+  "workspaces": {
+    "": {
+      "name": "@sudobility/sudojo_ui",
+      "devDependencies": {
+        "@heroicons/react": "^2.2.0",
+        "@sudobility/components": "^5.0.72",
+        "@sudobility/design": "^1.1.30",
+        "@sudobility/sudojo_lib": "^0.0.152",
+        "@sudobility/sudojo_types": "^1.2.56",
+        "@types/react": "^19.2.2",
+        "@types/react-dom": "^19.2.2",
+        "class-variance-authority": "^0.7.1",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "typescript": "~5.9.3",
+      },
+      "peerDependencies": {
+        "@heroicons/react": ">=2.0.0",
+        "@sudobility/components": "^5.0.72",
+        "@sudobility/design": "^1.1.30",
+        "@sudobility/sudojo_lib": "^0.0.152",
+        "@sudobility/sudojo_types": "^1.2.56",
+        "react": ">=18.0.0",
+        "react-dom": ">=18.0.0",
+      },
+    },
+  },
+  "packages": {
+    "@heroicons/react": ["@heroicons/react@2.2.0", "", { "peerDependencies": { "react": ">= 16 || ^19.0.0-rc" } }, "sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ=="],
+
+    "@rollup/rollup-linux-x64-gnu": ["@rollup/rollup-linux-x64-gnu@4.52.5", "", { "os": "linux", "cpu": "x64" }, "sha512-hXGLYpdhiNElzN770+H2nlx+jRog8TyynpTVzdlc6bndktjKWyZyiCsuDAlpd+j+W+WNqfcyAWz9HxxIGfZm1Q=="],
+
+    "@rollup/rollup-linux-x64-musl": ["@rollup/rollup-linux-x64-musl@4.52.5", "", { "os": "linux", "cpu": "x64" }, "sha512-arCGIcuNKjBoKAXD+y7XomR9gY6Mw7HnFBv5Rw7wQRvwYLR7gBAgV7Mb2QTyjXfTveBNFAtPt46/36vV9STLNg=="],
+
+    "@sudobility/components": ["@sudobility/components@5.0.72", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@heroicons/react": ">=2.0.0", "@sudobility/design": "^1.1.30", "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-BRen4QLLGH69OoZfsm8Mg5xUJy/fJ1xjRggA7SmnJmQCd7WnaV2HY3k4QtAp6VSgtJ5vPMHiPIvsv0YEdKmlmQ=="],
+
+    "@sudobility/design": ["@sudobility/design@1.1.30", "", {}, "sha512-yENSXWuMa9fxGGtvZUQFc94a2Iz/6R8qH4k4FU3qdX3eJYgATFWH13I3xNzM/cyt8Pm8THwiSNCnKjV0092NVg=="],
+
+    "@sudobility/sudojo_lib": ["@sudobility/sudojo_lib@0.0.152", "", { "peerDependencies": { "@sudobility/sudojo_types": "^1.2.56", "react": ">=18.0.0" } }, "sha512-0k6lslG2/ymtYxEarXnk5YOhGMayT+cm8o/Y8KUiatWyyhlfWZ0QN/1mXShtOuZpdFNqvdfkFL1zyJgn9f8GkQ=="],
+
+    "@sudobility/sudojo_types": ["@sudobility/sudojo_types@1.2.56", "", {}, "sha512-gJqw/FuL+ZKbhF6sH76VmgdtsdcTEmyZaENw/eBFaCXD+G0cX5uKPcQ/4h2Cg/t/yFXXvD7MAS7z/ERW0na7+g=="],
+
+    "@types/react": ["@types/react@19.2.17", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw=="],
+
+    "@types/react-dom": ["@types/react-dom@19.2.3", "", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ=="],
+
+    "class-variance-authority": ["class-variance-authority@0.7.1", "", { "dependencies": { "clsx": "^2.1.1" } }, "sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg=="],
+
+    "clsx": ["clsx@2.1.1", "", {}, "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="],
+
+    "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
+
+    "react": ["react@19.2.7", "", {}, "sha512-HNe9WslTbXmFK8o8cmwgAeJFSBvt1bPdHCVKtaaV+WlAN36mpT4hcRpwbf3fY56ar2oIXzsBpOAiIRHAdY0OlQ=="],
+
+    "react-dom": ["react-dom@19.2.7", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.7" } }, "sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ=="],
+
+    "scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
+
+    "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
+  }
+}
