@@ -12,8 +12,8 @@ export interface EntryControlsLabels {
 
 export interface EntryControlsProps {
   onNumberInput: (value: number) => void;
-  onErase: () => void;
-  onClearBoard: () => void;
+  onErase?: () => void;
+  onClearBoard?: () => void;
   onValidate: () => void;
   isValidating: boolean;
   disabled?: boolean;
@@ -79,18 +79,22 @@ export default function EntryControls({
           </Button>
         )}
 
-        <Button variant="outline" size="sm" onClick={onErase} disabled={disabled || !canEraseCell}>
-          {labels.eraseCell}
-        </Button>
+        {onErase && (
+          <Button variant="outline" size="sm" onClick={onErase} disabled={disabled || !canEraseCell}>
+            {labels.eraseCell}
+          </Button>
+        )}
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onClearBoard}
-          disabled={disabled || clueCount === 0}
-        >
-          {labels.clearBoard}
-        </Button>
+        {onClearBoard && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onClearBoard}
+            disabled={disabled || clueCount === 0}
+          >
+            {labels.clearBoard}
+          </Button>
+        )}
 
         <Button
           variant="primary"
