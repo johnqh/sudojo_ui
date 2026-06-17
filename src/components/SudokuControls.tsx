@@ -118,6 +118,16 @@ export default function SudokuControls({
           ) : (
             <div />
           )}
+          {onNewGame ? (
+            <button onClick={onNewGame} disabled={disabled} className={actionCellClass}>
+              <span className="flex flex-col items-center gap-1">
+                <ArrowPathIcon className={iconSize} />
+                <span className={`${labelSize} leading-tight`}>{labels.newGame}</span>
+              </span>
+            </button>
+          ) : (
+            <div />
+          )}
           {onHint ? (
             <button
               onClick={onHint}
@@ -129,16 +139,6 @@ export default function SudokuControls({
                 <span className={`${labelSize} leading-tight`}>
                   {isHintLoading ? labels.hintLoading : labels.hint}
                 </span>
-              </span>
-            </button>
-          ) : (
-            <div />
-          )}
-          {onNewGame ? (
-            <button onClick={onNewGame} disabled={disabled} className={actionCellClass}>
-              <span className="flex flex-col items-center gap-1">
-                <ArrowPathIcon className={iconSize} />
-                <span className={`${labelSize} leading-tight`}>{labels.newGame}</span>
               </span>
             </button>
           ) : (
@@ -217,6 +217,16 @@ export default function SudokuControls({
           {displayDigit(num, digitDisplay)}
         </button>
       ))}
+      {onNewGame ? (
+        <button onClick={onNewGame} disabled={disabled} className={actionCellClass}>
+          <span className="flex flex-col items-center gap-0.5">
+            <ArrowPathIcon className={iconSize} />
+            <span className={`${labelSize} leading-tight`}>{labels.newGame}</span>
+          </span>
+        </button>
+      ) : (
+        <div />
+      )}
       {onHint ? (
         <button onClick={onHint} disabled={disabled || isHintLoading} className={actionCellClass}>
           <span className="flex flex-col items-center gap-0.5">
@@ -224,16 +234,6 @@ export default function SudokuControls({
             <span className={`${labelSize} leading-tight`}>
               {isHintLoading ? labels.hintLoading : labels.hint}
             </span>
-          </span>
-        </button>
-      ) : (
-        <div />
-      )}
-      {onNewGame ? (
-        <button onClick={onNewGame} disabled={disabled} className={actionCellClass}>
-          <span className="flex flex-col items-center gap-0.5">
-            <ArrowPathIcon className={iconSize} />
-            <span className={`${labelSize} leading-tight`}>{labels.newGame}</span>
           </span>
         </button>
       ) : (
