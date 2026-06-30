@@ -18,6 +18,8 @@ export interface CompletionCelebrationProps {
   onComplete?: () => void;
 }
 
+// Decorative confetti palette — a deliberately festive multi-hue set applied as
+// inline particle fill (concrete colors required); not theme chrome.
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 const PARTICLE_COUNT = 50;
 const ANIMATION_DURATION = 3000;

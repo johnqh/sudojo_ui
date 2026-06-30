@@ -62,9 +62,9 @@ export default function SudokuControls({
 
   const cellBase =
     'aspect-square disabled:opacity-50 disabled:cursor-not-allowed transition-colors select-none';
-  const digitCellClass = `${cellBase} ${digitTextSize} font-semibold bg-blue-100 dark:bg-blue-800/50 text-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800/70 active:bg-blue-200 dark:active:bg-blue-800/70${isPencilMode ? ' italic' : ''}`;
-  const actionCellClass = `${cellBase} bg-amber-100 dark:bg-amber-800/40 text-amber-900 dark:text-amber-200 hover:bg-amber-200 dark:hover:bg-amber-800/60 active:bg-amber-200 dark:active:bg-amber-800/60 flex items-center justify-center`;
-  const actionActiveClass = 'bg-amber-300 dark:bg-amber-600 text-amber-950 dark:text-amber-50';
+  const digitCellClass = `${cellBase} ${digitTextSize} font-semibold bg-primary/10 text-primary hover:bg-primary/20 active:bg-primary/20${isPencilMode ? ' italic' : ''}`;
+  const actionCellClass = `${cellBase} bg-warning/10 text-warning hover:bg-warning/20 active:bg-warning/20 flex items-center justify-center`;
+  const actionActiveClass = 'bg-warning text-warning-foreground';
 
   if (landscape) {
     return (

@@ -51,7 +51,7 @@ export default function HintPanel({
     return (
       <div className="h-full flex flex-col select-none p-1">
         <div className="flex justify-between items-start flex-shrink-0">
-          <Text weight="semibold" className="text-blue-600 dark:text-blue-400">
+          <Text weight="semibold" className="text-primary">
             {title}
           </Text>
           <Button variant="ghost" size="sm" onClick={onDismiss} aria-label={dismissAriaLabel}>
@@ -67,7 +67,7 @@ export default function HintPanel({
           <Text size="sm" color="muted">
             {text}
           </Text>
-          <Text size="xs" weight="medium" className="text-green-600 dark:text-green-400">
+          <Text size="xs" weight="medium" className="text-success">
             {actionSummary}
           </Text>
         </div>
@@ -97,9 +97,9 @@ export default function HintPanel({
   }
 
   return (
-    <div className="h-full flex flex-col select-none border-l-4 border-l-blue-500 pl-3 py-1">
+    <div className="h-full flex flex-col select-none border-l-4 border-l-primary pl-3 py-1">
       <div className="flex justify-between items-start flex-shrink-0">
-        <Text size="sm" weight="semibold" className="text-blue-600 dark:text-blue-400">
+        <Text size="sm" weight="semibold" className="text-primary">
           {title}
         </Text>
         <Button variant="ghost" size="sm" onClick={onDismiss} aria-label={dismissAriaLabel}>
@@ -115,7 +115,7 @@ export default function HintPanel({
         <Text size="sm" color="muted">
           {text}
         </Text>
-        <Text size="xs" weight="medium" className="text-green-600 dark:text-green-400">
+        <Text size="xs" weight="medium" className="text-success">
           {actionSummary}
         </Text>
       </div>

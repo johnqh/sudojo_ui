@@ -33,7 +33,7 @@ export default function GameTimer({ elapsedRef, isRunning = true }: GameTimerPro
   }, [isRunning, elapsedRef]);
 
   return (
-    <div className="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800">
+    <div className="px-3 py-1.5 rounded-md bg-muted">
       <span className="text-sm font-semibold tabular-nums">{displayTime}</span>
     </div>
   );
