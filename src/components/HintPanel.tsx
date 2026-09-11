@@ -5,6 +5,12 @@ export interface HintPanelProps {
   title: string;
   /** Pre-localized hint explanation text */
   text: string;
+  /**
+   * Pre-localized heading for this hint, e.g. "Check row 3 for a Full House".
+   * Optional: when omitted the panel renders exactly as before, so callers that
+   * have no heading (or an older locale bundle) are unaffected.
+   */
+  heading?: string;
   /** Pre-computed action summary (e.g., "Set R3C5 = 7") */
   actionSummary: string;
   totalSteps: number;
@@ -31,6 +37,7 @@ export interface HintPanelProps {
 export default function HintPanel({
   title,
   text,
+  heading,
   actionSummary,
   totalSteps,
   hasNextStep,
@@ -62,6 +69,11 @@ export default function HintPanel({
           {totalSteps > 1 && stepLabel && (
             <Text size="xs" color="muted">
               {stepLabel}
+            </Text>
+          )}
+          {heading && (
+            <Text size="sm" weight="medium">
+              {heading}
             </Text>
           )}
           <Text size="sm" color="muted">
@@ -110,6 +122,11 @@ export default function HintPanel({
         {totalSteps > 1 && stepLabel && (
           <Text size="xs" color="muted">
             {stepLabel}
+          </Text>
+        )}
+        {heading && (
+          <Text size="sm" weight="medium">
+            {heading}
           </Text>
         )}
         <Text size="sm" color="muted">

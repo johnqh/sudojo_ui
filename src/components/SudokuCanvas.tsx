@@ -172,15 +172,11 @@ function drawLinks(
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(endX, endY);
-    if (link.type === 'conflict') {
-      ctx.strokeStyle = palette.systemRed;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([4, 3]);
-    } else {
-      ctx.strokeStyle = palette.systemPurple;
-      ctx.lineWidth = 2;
-      ctx.setLineDash(link.type === 'weak' ? [5, 5] : []);
-    }
+    // Conflict links never reach here: draw() filters them out, since conflicts are
+    // shown via colored digits and house borders instead.
+    ctx.strokeStyle = palette.systemPurple;
+    ctx.lineWidth = 2;
+    ctx.setLineDash(link.type === 'weak' ? [5, 5] : []);
     ctx.stroke();
     ctx.setLineDash([]);
   });
@@ -247,13 +243,18 @@ function drawCellGroupFills(
   groups.forEach(group => {
     const color = getColor(group.color, palette.systemPurple);
 
-    // Semi-transparent fill (20% opacity)
-    ctx.fillStyle = color + '33';
+    // Semi-transparent fill (20% opacity). Use globalAlpha rather than appending an
+    // alpha suffix: palette colors may already carry alpha (e.g. '#AF52DEFF'), and an
+    // invalid color string is silently ignored by canvas.
+    ctx.save();
+    ctx.globalAlpha = 0.2;
+    ctx.fillStyle = color;
     group.cellIndices.forEach(idx => {
       const row = Math.floor(idx / 9);
       const col = idx % 9;
       ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
     });
+    ctx.restore();
 
     // Border outline
     ctx.strokeStyle = color;

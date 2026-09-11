@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 interface Particle {
   id: number;
@@ -28,9 +28,18 @@ export default function CompletionCelebration({ show, onComplete }: CompletionCe
   const [particles, setParticles] = useState<Particle[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Create particles when show changes to true
+  // Latest onComplete, read when the animation ends. Keeping it out of the effect's
+  // dependencies means an inline callback (new identity every render) cannot restart
+  // or cancel a running animation.
+  const onCompleteRef = useRef(onComplete);
   useEffect(() => {
-    if (show && !isAnimating) {
+    onCompleteRef.current = onComplete;
+  });
+
+  // Create particles when show changes to true. Depends on `show` only: its own
+  // setIsAnimating must not re-run it, or the cleanup would clear the timeout.
+  useEffect(() => {
+    if (show) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAnimating(true);
 
@@ -58,13 +67,19 @@ export default function CompletionCelebration({ show, onComplete }: CompletionCe
       const timeout = setTimeout(() => {
         setIsAnimating(false);
         setParticles([]);
-        onComplete?.();
+        onCompleteRef.current?.();
       }, ANIMATION_DURATION);
 
-      return () => clearTimeout(timeout);
+      // `show` turned false early, or unmount: stop and hide (the interval effect
+      // below stops once isAnimating is false).
+      return () => {
+        clearTimeout(timeout);
+        setIsAnimating(false);
+        setParticles([]);
+      };
     }
     return undefined;
-  }, [show, isAnimating, onComplete]);
+  }, [show]);
 
   // Animate particles
   const updateParticles = useCallback(() => {

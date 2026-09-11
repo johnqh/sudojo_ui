@@ -32,6 +32,8 @@ export interface SudokuGameProps {
   hint?: SolverHintStep | null;
   hintTitle?: string;
   hintText?: string;
+  /** Optional pre-localized hint heading, forwarded to HintPanel's `heading` */
+  hintHeading?: string;
   hintActionSummary?: string;
   hintTotalSteps?: number;
   hintStepLabel?: string;
@@ -105,6 +107,7 @@ function SudokuGameInner({
   hint,
   hintTitle,
   hintText,
+  hintHeading,
   hintActionSummary,
   hintTotalSteps = 0,
   hintStepLabel,
@@ -172,6 +175,7 @@ function SudokuGameInner({
     <HintPanel
       title={hintTitle!}
       text={hintText ?? ''}
+      heading={hintHeading}
       actionSummary={hintActionSummary ?? ''}
       totalSteps={hintTotalSteps}
       hasNextStep={hintHasNext}
@@ -194,6 +198,7 @@ function SudokuGameInner({
       <HintPanel
         title={hintTitle!}
         text={hintText ?? ''}
+        heading={hintHeading}
         actionSummary={hintActionSummary ?? ''}
           totalSteps={hintTotalSteps}
         hasNextStep={hintHasNext}
