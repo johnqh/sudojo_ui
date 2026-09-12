@@ -1,5 +1,5 @@
-import { displayDigit } from '@sudobility/sudojo_lib';
-import type { DigitDisplay } from '@sudobility/sudojo_lib';
+import { displayDigit } from "@sudobility/sudojo_lib";
+import type { DigitDisplay } from "@sudobility/sudojo_lib";
 import {
   PencilIcon,
   BackspaceIcon,
@@ -7,7 +7,7 @@ import {
   SparklesIcon,
   LightBulbIcon,
   ArrowPathIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 
 export interface SudokuControlsLabels {
   pencil: string;
@@ -50,27 +50,40 @@ export default function SudokuControls({
   canUndo,
   isHintLoading = false,
   disabled = false,
-  digitDisplay = 'numeric',
+  digitDisplay = "numeric",
   landscape = false,
   labels,
 }: SudokuControlsProps) {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  const iconSize = landscape ? 'h-7 w-7' : 'h-5 w-5';
-  const labelSize = landscape ? 'text-sm' : 'text-[10px]';
-  const digitTextSize = landscape ? 'text-3xl' : 'text-xl';
+  const iconSize = landscape ? "h-7 w-7" : "h-5 w-5";
+  const labelSize = landscape ? "text-sm" : "text-[10px]";
+  const digitTextSize = landscape ? "text-3xl" : "text-xl";
 
   const cellBase =
-    'aspect-square disabled:opacity-50 disabled:cursor-not-allowed transition-colors select-none';
-  const digitCellClass = `${cellBase} ${digitTextSize} font-semibold bg-primary/10 text-primary hover:bg-primary/20 active:bg-primary/20${isPencilMode ? ' italic' : ''}`;
-  const actionCellClass = `${cellBase} bg-warning/10 text-warning hover:bg-warning/20 active:bg-warning/20 flex items-center justify-center`;
-  const actionActiveClass = 'bg-warning text-warning-foreground';
+    "aspect-square disabled:opacity-50 disabled:cursor-not-allowed transition-colors select-none";
+  // kept: the keypad's blue/amber pads are a fixed accent scheme, matching
+  // sudojo_app_rn's SudokuControls (DIGIT_COLORS / ACTION_COLORS) so the two
+  // apps' keypads look identical. Semantic tints (bg-warning/10 text-warning)
+  // drifted here when `warning` darkened for text contrast: 10% of a dark
+  // brown reads grey, not amber.
+  const digitPad =
+    "bg-blue-100 text-blue-900 hover:bg-blue-200 active:bg-blue-200 " +
+    "dark:bg-blue-900/50 dark:text-blue-100 dark:hover:bg-blue-900/70 dark:active:bg-blue-900/70";
+  const actionPad =
+    "bg-amber-100 text-amber-900 hover:bg-amber-200 active:bg-amber-200 " +
+    "dark:bg-amber-900/40 dark:text-amber-200 dark:hover:bg-amber-900/60 dark:active:bg-amber-900/60";
+
+  const digitCellClass = `${cellBase} ${digitTextSize} font-semibold ${digitPad}${isPencilMode ? " italic" : ""}`;
+  const actionCellClass = `${cellBase} ${actionPad} flex items-center justify-center`;
+  const actionActiveClass =
+    "bg-amber-300 text-amber-950 dark:bg-amber-600 dark:text-amber-50";
 
   if (landscape) {
     return (
       <div className="h-full flex flex-col justify-between">
         <div className="grid grid-cols-3 gap-2">
-          {numbers.map(num => (
+          {numbers.map((num) => (
             <button
               key={num}
               onClick={() => onNumberInput(num)}
@@ -85,44 +98,66 @@ export default function SudokuControls({
           <button
             onClick={onTogglePencil}
             disabled={disabled}
-            className={`${actionCellClass}${isPencilMode ? ` ${actionActiveClass}` : ''}`}
+            className={`${actionCellClass}${isPencilMode ? ` ${actionActiveClass}` : ""}`}
           >
             <span className="flex flex-col items-center gap-1">
               <PencilIcon className={iconSize} />
-              <span className={`${labelSize} leading-tight`}>{labels.pencil}</span>
+              <span className={`${labelSize} leading-tight`}>
+                {labels.pencil}
+              </span>
             </span>
           </button>
-          <button onClick={onErase} disabled={disabled} className={actionCellClass}>
+          <button
+            onClick={onErase}
+            disabled={disabled}
+            className={actionCellClass}
+          >
             <span className="flex flex-col items-center gap-1">
               <BackspaceIcon className={iconSize} />
-              <span className={`${labelSize} leading-tight`}>{labels.erase}</span>
+              <span className={`${labelSize} leading-tight`}>
+                {labels.erase}
+              </span>
             </span>
           </button>
-          <button onClick={onUndo} disabled={disabled || !canUndo} className={actionCellClass}>
+          <button
+            onClick={onUndo}
+            disabled={disabled || !canUndo}
+            className={actionCellClass}
+          >
             <span className="flex flex-col items-center gap-1">
               <ArrowUturnLeftIcon className={iconSize} />
-              <span className={`${labelSize} leading-tight`}>{labels.undo}</span>
+              <span className={`${labelSize} leading-tight`}>
+                {labels.undo}
+              </span>
             </span>
           </button>
           {onAutoPencil ? (
             <button
               onClick={onAutoPencil}
               disabled={disabled}
-              className={`${actionCellClass}${isAutoPencilmarks ? ` ${actionActiveClass}` : ''}`}
+              className={`${actionCellClass}${isAutoPencilmarks ? ` ${actionActiveClass}` : ""}`}
             >
               <span className="flex flex-col items-center gap-1">
                 <SparklesIcon className={iconSize} />
-                <span className={`${labelSize} leading-tight`}>{labels.autoPencil}</span>
+                <span className={`${labelSize} leading-tight`}>
+                  {labels.autoPencil}
+                </span>
               </span>
             </button>
           ) : (
             <div />
           )}
           {onNewGame ? (
-            <button onClick={onNewGame} disabled={disabled} className={actionCellClass}>
+            <button
+              onClick={onNewGame}
+              disabled={disabled}
+              className={actionCellClass}
+            >
               <span className="flex flex-col items-center gap-1">
                 <ArrowPathIcon className={iconSize} />
-                <span className={`${labelSize} leading-tight`}>{labels.newGame}</span>
+                <span className={`${labelSize} leading-tight`}>
+                  {labels.newGame}
+                </span>
               </span>
             </button>
           ) : (
@@ -151,7 +186,7 @@ export default function SudokuControls({
 
   return (
     <div className="w-full grid grid-cols-5 gap-2">
-      {[1, 2, 3].map(num => (
+      {[1, 2, 3].map((num) => (
         <button
           key={num}
           onClick={() => onNumberInput(num)}
@@ -164,7 +199,7 @@ export default function SudokuControls({
       <button
         onClick={onTogglePencil}
         disabled={disabled}
-        className={`${actionCellClass}${isPencilMode ? ` ${actionActiveClass}` : ''}`}
+        className={`${actionCellClass}${isPencilMode ? ` ${actionActiveClass}` : ""}`}
       >
         <span className="flex flex-col items-center gap-0.5">
           <PencilIcon className={iconSize} />
@@ -177,7 +212,7 @@ export default function SudokuControls({
           <span className={`${labelSize} leading-tight`}>{labels.erase}</span>
         </span>
       </button>
-      {[4, 5, 6].map(num => (
+      {[4, 5, 6].map((num) => (
         <button
           key={num}
           onClick={() => onNumberInput(num)}
@@ -187,7 +222,11 @@ export default function SudokuControls({
           {displayDigit(num, digitDisplay)}
         </button>
       ))}
-      <button onClick={onUndo} disabled={disabled || !canUndo} className={actionCellClass}>
+      <button
+        onClick={onUndo}
+        disabled={disabled || !canUndo}
+        className={actionCellClass}
+      >
         <span className="flex flex-col items-center gap-0.5">
           <ArrowUturnLeftIcon className={iconSize} />
           <span className={`${labelSize} leading-tight`}>{labels.undo}</span>
@@ -197,17 +236,19 @@ export default function SudokuControls({
         <button
           onClick={onAutoPencil}
           disabled={disabled}
-          className={`${actionCellClass}${isAutoPencilmarks ? ` ${actionActiveClass}` : ''}`}
+          className={`${actionCellClass}${isAutoPencilmarks ? ` ${actionActiveClass}` : ""}`}
         >
           <span className="flex flex-col items-center gap-0.5">
             <SparklesIcon className={iconSize} />
-            <span className={`${labelSize} leading-tight`}>{labels.autoPencil}</span>
+            <span className={`${labelSize} leading-tight`}>
+              {labels.autoPencil}
+            </span>
           </span>
         </button>
       ) : (
         <div />
       )}
-      {[7, 8, 9].map(num => (
+      {[7, 8, 9].map((num) => (
         <button
           key={num}
           onClick={() => onNumberInput(num)}
@@ -218,17 +259,27 @@ export default function SudokuControls({
         </button>
       ))}
       {onNewGame ? (
-        <button onClick={onNewGame} disabled={disabled} className={actionCellClass}>
+        <button
+          onClick={onNewGame}
+          disabled={disabled}
+          className={actionCellClass}
+        >
           <span className="flex flex-col items-center gap-0.5">
             <ArrowPathIcon className={iconSize} />
-            <span className={`${labelSize} leading-tight`}>{labels.newGame}</span>
+            <span className={`${labelSize} leading-tight`}>
+              {labels.newGame}
+            </span>
           </span>
         </button>
       ) : (
         <div />
       )}
       {onHint ? (
-        <button onClick={onHint} disabled={disabled || isHintLoading} className={actionCellClass}>
+        <button
+          onClick={onHint}
+          disabled={disabled || isHintLoading}
+          className={actionCellClass}
+        >
           <span className="flex flex-col items-center gap-0.5">
             <LightBulbIcon className={iconSize} />
             <span className={`${labelSize} leading-tight`}>
