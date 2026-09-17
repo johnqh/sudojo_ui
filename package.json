@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/sudojo_ui",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "Shared Sudoku game UI components for Sudojo",
   "type": "module",
   "main": "dist/index.js",
@@ -28,7 +28,7 @@
     "@heroicons/react": ">=2.0.0",
     "@sudobility/components": "^5.3.20",
     "@sudobility/design": "^1.1.54",
-    "@sudobility/sudojo_lib": "^0.0.197",
+    "@sudobility/sudojo_lib": "^0.0.198",
     "@sudobility/sudojo_types": "^1.2.70",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
@@ -37,7 +37,7 @@
     "@heroicons/react": "^2.2.0",
     "@sudobility/components": "^5.3.20",
     "@sudobility/design": "^1.1.54",
-    "@sudobility/sudojo_lib": "^0.0.197",
+    "@sudobility/sudojo_lib": "^0.0.198",
     "@sudobility/sudojo_types": "^1.2.70",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
