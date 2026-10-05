@@ -7,13 +7,13 @@ import {
   themeColorToCSS,
   getColorPalette,
   computeSelectedDigitCells,
-  convertSolverLink,
-  convertSolverCellGroup,
+  convertSolverHintStep,
+  isConflictHintStep,
   displayDigit,
   ThemeColor,
-  SudokuColor,
   sudokuColorToTheme,
   type CellDisplayState,
+  type HintArea,
   type DisplayLink,
   type DisplayCellGroup,
   type UIColorPalette,
@@ -33,88 +33,6 @@ interface SudokuCanvasProps {
   className?: string;
   /** Aria label for the board canvas */
   boardAriaLabel?: string;
-}
-
-/**
- * Convert SolverHintStep from solver client to display format
- * The solver client uses string actions, but the presenter expects numbers/arrays
- */
-function convertHintStep(
-  hint: SolverHintStep | null | undefined
-): Parameters<typeof presentBoard>[0]['hintStep'] {
-  if (!hint) return null;
-
-  return {
-    title: hint.title,
-    text: hint.text,
-    areas:
-      hint.areas?.map(area => ({
-        type: area.type,
-        color: area.color as Parameters<typeof presentBoard>[0]['hintStep'] extends {
-          areas?: infer A;
-        }
-          ? A extends Array<{ color: infer C }>
-            ? C
-            : never
-          : never,
-        index: area.index,
-      })) ?? null,
-    cells:
-      hint.cells?.map(cell => ({
-        index: cell.row * 9 + cell.column,
-        color: cell.color as Parameters<typeof presentBoard>[0]['hintStep'] extends {
-          cells?: infer C;
-        }
-          ? C extends Array<{ color: infer CO }>
-            ? CO
-            : never
-          : never,
-        fill: cell.fill,
-        actions: cell.actions
-          ? {
-              // Matches Kotlin: select = if (select != 0) select else null
-              select: cell.actions.select ? parseInt(cell.actions.select, 10) || null : null,
-              unselect: cell.actions.unselect ? parseInt(cell.actions.unselect, 10) || null : null,
-              add: cell.actions.add
-                ? cell.actions.add
-                    .split('')
-                    .map(d => parseInt(d, 10))
-                    .filter(n => !isNaN(n) && n !== 0)
-                : null,
-              remove: cell.actions.remove
-                ? cell.actions.remove
-                    .split('')
-                    .map(d => parseInt(d, 10))
-                    .filter(n => !isNaN(n) && n !== 0)
-                : null,
-              highlight: cell.actions.highlight
-                ? cell.actions.highlight
-                    .split('')
-                    .map(d => parseInt(d, 10))
-                    .filter(n => !isNaN(n) && n !== 0)
-                : null,
-            }
-          : undefined,
-      })) ?? null,
-    digit: hint.digit ?? null,
-    links: hint.links?.length ? hint.links.map(convertSolverLink) : null,
-  };
-}
-
-/**
- * Convert solver links to display format
- */
-function convertLinks(hint: SolverHintStep | null | undefined): DisplayLink[] | null {
-  if (!hint?.links?.length) return null;
-  return hint.links.map(convertSolverLink);
-}
-
-/**
- * Convert solver cell groups to display format
- */
-function convertGroups(hint: SolverHintStep | null | undefined): DisplayCellGroup[] | null {
-  if (!hint?.groups?.length) return null;
-  return hint.groups.map(convertSolverCellGroup);
 }
 
 // =============================================================================
@@ -331,14 +249,13 @@ function drawCellGroupLabels(
  */
 function drawHouseBorders(
   ctx: CanvasRenderingContext2D,
-  hint: SolverHintStep,
+  areas: HintArea[],
   cellSize: number,
   palette: UIColorPalette
 ): void {
-  if (!hint.areas) return;
-
-  hint.areas.forEach(area => {
-    const color = themeColorToCSS(palette, sudokuColorToTheme(area.color as SudokuColor));
+  areas.forEach(area => {
+    // Areas whose solver color is not a hint color have a null color: no outline.
+    const color = themeColorToCSS(palette, sudokuColorToTheme(area.color));
     if (!color) return;
 
     ctx.save();
@@ -395,18 +312,15 @@ function SudokuCanvas({
   // Get color palette
   const palette = useMemo(() => getColorPalette(isDarkMode), [isDarkMode]);
 
-  // Convert hint to display format
-  const displayHint = useMemo(() => convertHintStep(hint), [hint]);
-
-  // Convert links and groups from hint
-  const displayLinks = useMemo(() => convertLinks(hint), [hint]);
-  const displayGroups = useMemo(() => convertGroups(hint), [hint]);
+  // Convert the solver hint (actions, areas, cells, links, groups) to display
+  // format once. Unknown solver colors become null and fall back to presenter
+  // defaults.
+  const displayHint = useMemo(() => convertSolverHintStep(hint), [hint]);
+  const displayLinks = displayHint?.links ?? null;
+  const displayGroups = displayHint?.groups ?? null;
 
   // Detect conflict hint for visual treatment
-  const isConflictHint = useMemo(
-    () => displayLinks?.some(link => link.type === 'conflict') ?? false,
-    [displayLinks]
-  );
+  const isConflictHint = useMemo(() => isConflictHintStep(displayHint), [displayHint]);
 
   // Compute selectedDigitCells - cells that have the same digit as selected cell
   // Only computed when selected cell has a given or correct input
@@ -491,8 +405,8 @@ function SudokuCanvas({
     });
 
     // Draw house borders for conflict hints
-    if (isConflictHint && hint) {
-      drawHouseBorders(ctx, hint, cellSize, palette);
+    if (isConflictHint && displayHint?.areas) {
+      drawHouseBorders(ctx, displayHint.areas, cellSize, palette);
     }
 
     // Draw cell group fills and outlines (behind cell content)
@@ -591,6 +505,7 @@ function SudokuCanvas({
     ctx.strokeRect(0.5, 0.5, size - 1, size - 1);
   }, [
     displayStates,
+    displayHint,
     displayLinks,
     displayGroups,
     palette,

@@ -56,13 +56,13 @@ than `build`, so a clean build does not imply a clean typecheck).
 |--------|------|---------|---------|
 | `SudokuCanvas` (memo) | `SudokuCanvas.tsx` | `<canvas>` 9×9 board: digits, pencilmarks, selection, hint areas/cells/links/groups | app, extension |
 | `SudokuControls` + `SudokuControlsProps`, `SudokuControlsLabels` | `SudokuControls.tsx` | Play number pad + pencil/erase/undo/auto-pencil/new-game/hint (portrait 5-col, landscape 3-col) | app |
-| `EntryControls` + `EntryControlsProps`, `EntryControlsLabels` | `EntryControls.tsx` | Puzzle-entry pad: 1–9, clue count, erase/clear/validate (17-clue minimum) | app, extension |
+| `EntryControls` + `EntryControlsProps`, `EntryControlsLabels` | `EntryControls.tsx` | Puzzle-entry pad: 1–9, clue count, erase/clear/validate (`minClues` default `MIN_CLUES`, optional `canValidate`) | app, extension |
 | `HintPanel` + `HintPanelProps` | `HintPanel.tsx` | Hint title/heading/text/action summary + Prev/Next/Apply/✕ | app, extension |
 | `GameTimer` + `GameTimerProps` | `GameTimer.tsx` | Reads seconds from a ref, re-renders itself once per second | app |
 | `CompletionCelebration` + `CompletionCelebrationProps` | `CompletionCelebration.tsx` | Fixed full-screen confetti (3 s), then `onComplete` | app, extension |
 | `SudokuLayout` | `SudokuLayout.tsx` | Size container (`container-type: size`) + ResizeObserver → layout context | app |
 | `SudokuLayoutContext`, `useSudokuLayout`, `SudokuLayoutContextValue` | `SudokuLayoutContext.ts` | `{ isLandscape, availableWidth, availableHeight }` | app (`useSudokuLayout`) |
-| `SudokuGame` (memo) + `SudokuGameProps` | `SudokuGame.tsx` | Orchestrator: wraps itself in `SudokuLayout`, composes all of the above | no sibling currently |
+| `SudokuGame` (memo) + `SudokuGameProps` | `SudokuGame.tsx` | Orchestrator: composes all of the above; `layout: 'fixed'` (default, wraps itself in `SudokuLayout`) or `'auto'` (normal flow); `readOnly`, `renderHintPanel`, `header`/`showProgress`, `belowBoard`, `hideControlsWhenCompleted`, `boardSizing` | no sibling currently |
 
 No hooks other than `useSudokuLayout`. `SudokuCanvasProps` and `SudokuLayoutProps` are **not exported**
 — use `React.ComponentProps<typeof SudokuCanvas>`.
@@ -88,7 +88,7 @@ All runtime deps are **peers** (duplicated in devDependencies for local builds):
 
 | Package | Kind | Used for |
 |---------|------|----------|
-| `@sudobility/sudojo_lib` `^0.0.192` | sibling | `presentBoard`, `getColorPalette`, `themeColorToCSS`, `sudokuColorToTheme`, `convertSolverLink`, `convertSolverCellGroup`, `computeSelectedDigitCells`, `displayDigit`, `formatTime`; types `SudokuCell`, `DigitDisplay` |
+| `@sudobility/sudojo_lib` `^0.0.192` | sibling | `presentBoard`, `getColorPalette`, `themeColorToCSS`, `sudokuColorToTheme`, `convertSolverHintStep`, `isConflictHintStep`, `computeSelectedDigitCells`, `displayDigit`, `formatTime`, `MIN_CLUES`; types `SudokuCell`, `DigitDisplay`, `HintArea` |
 | `@sudobility/sudojo_types` `^1.2.67` | sibling | `SolverHintStep` (type-only import) |
 | `@sudobility/components` `^5.3.17` | family | `Button`, `Text` (HintPanel, EntryControls) |
 | `@sudobility/design` `^1.1.52` | family | Not imported; its Tailwind preset supplies the semantic color tokens |
@@ -117,14 +117,18 @@ All runtime deps are **peers** (duplicated in devDependencies for local builds):
 ## Hint Rendering Contract
 
 Input is one `SolverHintStep` from `sudojo_types` (spec: `../sudojo_solver/docs/HINT.md`).
-`convertHintStep()` in `SudokuCanvas.tsx` maps it to `sudojo_lib`'s `HintStep`: `row*9+column` indices,
-`select`/`unselect` `"0"` → `null`, `add`/`remove`/`highlight` digit strings → `number[]`.
+`SudokuCanvas` converts it once with `sudojo_lib`'s `convertSolverHintStep()` (shared with the RN
+canvas): `row*9+column` indices, `select`/`unselect` `"0"` → `null`, digit strings → `number[]`,
+links and groups converted, and colors validated by `solverColorToSudokuColor` — only
+blue/green/yellow/orange/red map; anything else (gray/white/black/clear) is `null` and falls back to
+presenter defaults (no fill override, blue border on unfilled cells; no conflict house outline).
+No conversion logic lives in this repo.
 
 Draw order: background → cell fills (20% alpha while a hint is shown) → cell borders (30% alpha) →
 house outlines (conflict hints only) → group fill (20% via `globalAlpha`) + 3px outline → digits/pencilmarks → group labels →
 links (purple; weak = dashed 5/5) → 1px grid (box lines also 1px, darker color).
 
-A step is a **conflict hint** if any link has `type: 'conflict'`: its `areas` are outlined (2px) and
+A step is a **conflict hint** if any link has `type: 'conflict'` (`isConflictHintStep` from sudojo_lib): its `areas` are outlined (2px) and
 conflict links are **not drawn** (orange source digits carry the meaning). This is intentional:
 `draw()` filters them out, so `drawLinks` has no conflict style.
 
@@ -132,6 +136,7 @@ conflict links are **not drawn** (orange source digits carry the meaning). This 
 
 - Every component needs a parent with a definite size. `SudokuLayout` is `flex-1 min-h-0` with
   `container-type: size`; `SudokuGame` widths use `cqw/cqh`, so a height-less parent collapses it.
+  Use `SudokuGame layout="auto"` in a scrolling, height-less parent.
   Landscape = `width >= 1.5 × height`.
 - `useSudokuLayout()` outside `SudokuLayout` silently returns `{ isLandscape: false, 0, 0 }`.
 - `SudokuCanvas` sizes itself to `min(containerWidth, containerHeight)`; passing `className` **replaces**
@@ -142,7 +147,7 @@ conflict links are **not drawn** (orange source digits carry the meaning). This 
   `onHint{Next,Previous,Apply,Dismiss}` are set; `SudokuControls` only when `showControls` and
   `controlsLabels` are set. Missing props render nothing, with no error.
 - `SudokuControls` renders an empty grid cell when `onAutoPencil` / `onNewGame` / `onHint` is omitted.
-- `EntryControls` hard-codes the 17-clue minimum (label and Validate disabled below 17).
+- `EntryControls` decides Validate from `canValidate` when passed, else `clueCount >= minClues` (default `MIN_CLUES`). It is always disabled while `isValidating`.
 - `HintPanel.heading` (optional) and its `SudokuGame` pass-through `hintHeading` are newer than the
   published 0.0.46. `sudojo_app`'s `HintPanel` wrapper passes `heading`, so publish this package
   before that app change can build against npm.
@@ -156,7 +161,7 @@ conflict links are **not drawn** (orange source digits carry the meaning). This 
 
 ## Known Issues (unfixed)
 
-- `SudokuGame.tsx:151-152` uses `primary-50/700/900/300` shades, and `EntryControls.tsx:50,57` uses
+- `SudokuGame`'s default header progress badge uses `primary-50/700/900/300` shades, and `EntryControls` uses
   `var(--color-bg-*)` / `var(--color-text-*)`. The `@sudobility/design` preset defines no numeric
   `primary` scale, and neither consumer appears to define those CSS variables.
 - `ci-cd.yml` passes `npm-access: "restricted"` while `package.json` has `publishConfig.access: public`.

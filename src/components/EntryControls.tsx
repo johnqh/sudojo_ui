@@ -1,4 +1,5 @@
 import { Button } from '@sudobility/components';
+import { MIN_CLUES } from '@sudobility/sudojo_lib';
 
 export interface EntryControlsLabels {
   clueCount: (count: number) => string;
@@ -21,6 +22,18 @@ export interface EntryControlsProps {
   canEraseCell?: boolean;
   isPencilMode?: boolean;
   onTogglePencilMode?: () => void;
+  /**
+   * Fewest clues a board needs before it can be validated. Drives the
+   * `labels.minClues` hint and the default `canValidate`. Defaults to
+   * `MIN_CLUES` (17) from sudojo_lib / sudojo_types.
+   */
+  minClues?: number;
+  /**
+   * Whether Validate is enabled, as decided by the caller (e.g. useBoardEntry).
+   * When omitted, falls back to `clueCount >= minClues`. Validate is always
+   * disabled while `isValidating` or `disabled` is true.
+   */
+  canValidate?: boolean;
   labels: EntryControlsLabels;
 }
 
@@ -35,9 +48,13 @@ export default function EntryControls({
   canEraseCell = false,
   isPencilMode = false,
   onTogglePencilMode,
+  minClues = MIN_CLUES,
+  canValidate,
   labels,
 }: EntryControlsProps) {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const hasEnoughClues = clueCount >= minClues;
+  const validateEnabled = (canValidate ?? hasEnoughClues) && !isValidating;
 
   return (
     <div className="w-full space-y-4">
@@ -55,7 +72,7 @@ export default function EntryControls({
       </div>
 
       <div className="text-center text-sm text-[var(--color-text-secondary)]">
-        {labels.clueCount(clueCount)} {clueCount < 17 && labels.minClues}
+        {labels.clueCount(clueCount)} {!hasEnoughClues && labels.minClues}
       </div>
 
       <div className="flex flex-wrap gap-2 justify-center">
@@ -101,7 +118,7 @@ export default function EntryControls({
             variant="primary"
             size="sm"
             onClick={onValidate}
-            disabled={disabled || isValidating || clueCount < 17}
+            disabled={disabled || !validateEnabled}
           >
             {isValidating ? labels.validating : labels.validate}
           </Button>
